@@ -6,35 +6,139 @@
 }
 
 body {
-  background-color: #b3d9f2;
+  background-color: #f0f4f8;
   color: #333;
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 40px 15px;
   min-height: 100vh;
 }
 
 .todo-app {
   background: #ffffff;
-  width: 70%;
-  max-width: 700px;
+  width: 100%;
+  max-width: 500px;
   padding: 30px;
-  border-radius: 16px; /* Lebih bulat */
+  border-radius: 16px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  animation: appSpawn 0.5s ease-out; 
+  animation: appSpawn 0.5s ease-out;
+}
+
+/* --- Weather Widget Styles --- */
+.weather-widget {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: #ffffff;
+  padding: 16px 18px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.weather-widget:hover {
+  transform: translateY(-2px);
+}
+
+.weather-search-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.weather-search-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #fff;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.weather-search-form input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.weather-search-form input:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.weather-search-form button {
+  padding: 8px 14px;
+  background: #ffffff;
+  color: #1e3c72;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.weather-search-form button:hover {
+  background: #eef2f7;
+}
+
+.weather-search-form button:active {
+  transform: scale(0.96);
+}
+
+.weather-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.weather-city {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.weather-desc {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  text-transform: capitalize;
+  margin-top: 2px;
+}
+
+.weather-temp-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.weather-icon {
+  width: 42px;
+  height: 42px;
+}
+
+.weather-temp {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* --- Layout & Typography --- */
+h1 {
+  font-size: 1.7rem;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-align: center;
 }
 
 .input-group {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .input-group input {
   width: 100%;
-  padding: 14px 18px;
+  padding: 13px 16px;
   border: 2px solid #e0e6ed;
   border-radius: 10px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -46,13 +150,13 @@ body {
 
 .filter-group {
   display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: 8px;
+  margin-bottom: 20px;
   justify-content: center;
 }
 
 .filter-btn {
-  padding: 8px 16px;
+  padding: 6px 14px;
   border: 1px solid #dcdfe6;
   background: #fff;
   border-radius: 20px;
@@ -77,28 +181,22 @@ body {
 
 .todo-list {
   list-style: none;
-  position: relative; 
+  min-height: 50px;
+  position: relative;
 }
 
 .todo-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: 14px;
   background: #fff;
   border: 1px solid #eef2f7;
   border-radius: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   cursor: grab;
-  
-  transition: 
-    background 0.3s ease, 
-    transform 0.2s ease, 
-    box-shadow 0.2s ease,
-    opacity 0.3s ease;
-
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
   animation: itemSpawn 0.4s ease-out forwards;
-  
   position: relative;
   z-index: 1;
 }
@@ -110,8 +208,6 @@ body {
 .todo-item.completed .todo-text {
   text-decoration: line-through;
   color: #909399;
-  /* Transisi coretan */
-  transition: color 0.3s ease;
 }
 
 .todo-item:not(.dragging):hover {
@@ -135,14 +231,14 @@ body {
 .todo-left {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
   flex: 1;
   overflow: hidden;
 }
 
 .todo-checkbox {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   cursor: pointer;
   accent-color: #2ecc71;
   transition: transform 0.2s ease;
@@ -160,7 +256,7 @@ body {
 }
 
 .todo-text {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #2c3e50;
   word-break: break-word;
   cursor: pointer;
@@ -170,7 +266,7 @@ body {
 .todo-date {
   font-size: 0.75rem;
   color: #909399;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .edit-input {
@@ -188,12 +284,12 @@ body {
   background: none;
   border: none;
   color: #fab6b6;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   cursor: pointer;
   padding: 0 8px;
   border-radius: 6px;
   transition: all 0.3s ease;
-  margin-left: 10px;
+  margin-left: 8px;
 }
 
 .delete-btn:hover {
@@ -210,20 +306,15 @@ body {
   animation: fadeIn 0.5s ease;
 }
 
+/* --- Keyframes --- */
 @keyframes appSpawn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes itemSpawn {
-  0% {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes fadeIn {

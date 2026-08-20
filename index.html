@@ -1,29 +1,52 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List & Weather</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="todo-app">
-        <h1>To-Do List</h1>
+  <div class="todo-app">
+    <div class="weather-widget" id="weather-widget">
+      <form class="weather-search-form" id="weather-form">
+        <input 
+          type="text" 
+          id="weather-city-input" 
+          placeholder="Cari nama kota..." 
+          autocomplete="off"
+        >
+        <button type="submit" id="weather-search-btn">Cari</button>
+      </form>
 
-        <div class="input-group">
-            <input type=""text" id="todo-input" placeholder="Tambahkan tugas baru...">
+      <div class="weather-body">
+        <div class="weather-info">
+          <div class="weather-city" id="weather-city">Jakarta, ID</div>
+          <div class="weather-desc" id="weather-desc">Memuat data cuaca...</div>
         </div>
-
-        <div class="filter-group">
-            <button class="filter-btn active" data-filter="all">Semua</button>
-            <button class="filter-btn" data-filter="active">Belum Selesai</button>
-            <button class="filter-btn" data-filter="completed">Selesai</button>
+        <div class="weather-temp-container">
+          <img id="weather-icon" class="weather-icon" src="" alt="Icon Cuaca" style="display: none;">
+          <span class="weather-temp" id="weather-temp">--°C</span>
         </div>
-
-        <ul class="todo-list" id="todo-list"></ul>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <h1>To-Do List</h1>
+    
+    <div class="input-group">
+      <input type="text" id="todo-input" placeholder="Tambah tugas baru (Tekan Enter)..." autocomplete="off">
+    </div>
+
+    <div class="filter-group">
+      <button class="filter-btn active" data-filter="all">Semua</button>
+      <button class="filter-btn" data-filter="active">Belum Selesai</button>
+      <button class="filter-btn" data-filter="completed">Selesai</button>
+    </div>
+
+    <ul class="todo-list" id="todo-list"></ul>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
