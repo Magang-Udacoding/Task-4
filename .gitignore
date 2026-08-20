@@ -1,0 +1,19 @@
+# File konfigurasi rahasia / environment variables
+.env
+.env.local
+config.local.js
+
+# Folder dependensi pihak ketiga
+node_modules/
+vendor/
+
+# File bawaan OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Log & file build / output
+*.log
+dist/
+build/

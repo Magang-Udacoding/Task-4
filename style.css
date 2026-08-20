@@ -1,0 +1,237 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #b3d9f2;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 15px;
+  min-height: 100vh;
+}
+
+.todo-app {
+  background: #ffffff;
+  width: 70%;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: 16px; /* Lebih bulat */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  animation: appSpawn 0.5s ease-out; 
+}
+
+.input-group {
+  margin-bottom: 25px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e6ed;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+}
+
+.filter-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 1px solid #dcdfe6;
+  background: #fff;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #606266;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: #f5f7fa;
+  border-color: #c0c4cc;
+}
+
+.filter-btn.active {
+  background: #3498db;
+  color: #fff;
+  border-color: #3498db;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+}
+
+.todo-list {
+  list-style: none;
+  position: relative; 
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #eef2f7;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  cursor: grab;
+  
+  transition: 
+    background 0.3s ease, 
+    transform 0.2s ease, 
+    box-shadow 0.2s ease,
+    opacity 0.3s ease;
+
+  animation: itemSpawn 0.4s ease-out forwards;
+  
+  position: relative;
+  z-index: 1;
+}
+
+.todo-item.completed {
+  background: #fbfcfd;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #909399;
+  /* Transisi coretan */
+  transition: color 0.3s ease;
+}
+
+.todo-item:not(.dragging):hover {
+  background: #fdfeff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.todo-item:active {
+  cursor: grabbing;
+}
+
+.todo-item.dragging {
+  opacity: 0.5;
+  background: #eaf2f8;
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.todo-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #2ecc71;
+  transition: transform 0.2s ease;
+}
+
+.todo-checkbox:active {
+  transform: scale(1.2);
+}
+
+.todo-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+}
+
+.todo-text {
+  font-size: 1rem;
+  color: #2c3e50;
+  word-break: break-word;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.todo-date {
+  font-size: 0.75rem;
+  color: #909399;
+  margin-top: 4px;
+}
+
+.edit-input {
+  width: 95%;
+  padding: 6px 10px;
+  border: 1px solid #3498db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  background: #fff;
+  animation: editSpawn 0.2s ease-out;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #fab6b6;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+  transform: rotate(90deg);
+}
+
+.empty-msg {
+  text-align: center;
+  color: #a0aec0;
+  font-size: 0.9rem;
+  padding: 20px 0;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes appSpawn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes itemSpawn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes editSpawn {
+  from { opacity: 0; transform: scaleY(0); }
+  to { opacity: 1; transform: scaleY(1); }
+}
