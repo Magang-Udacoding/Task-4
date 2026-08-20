@@ -19,11 +19,6 @@ const weatherIcon = document.getElementById('weather-icon');
 async function fetchWeather(city) {
   if (!city.trim()) return;
 
-  if (WEATHER_API_KEY === '4cfa5964b175b7638e53fa3c7020d6bf') {
-    weatherDesc.textContent = 'Setup API key di script.js';
-    return;
-  }
-
   weatherDesc.textContent = `Mencari data cuaca ${city}...`;
   weatherTemp.textContent = '--°C';
   weatherIcon.style.display = 'none';
