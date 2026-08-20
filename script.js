@@ -1,10 +1,75 @@
+const WEATHER_API_KEY = '4cfa5964b175b7638e53fa3c7020d6bf';
+
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let savedCity = localStorage.getItem('weather_city') || 'Jakarta';
 let currentFilter = 'all';
 let dragSrcIndex = null;
 
 const todoInput = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
 const filterBtns = document.querySelectorAll('.filter-btn');
+
+const weatherForm = document.getElementById('weather-form');
+const weatherCityInput = document.getElementById('weather-city-input');
+const weatherCity = document.getElementById('weather-city');
+const weatherDesc = document.getElementById('weather-desc');
+const weatherTemp = document.getElementById('weather-temp');
+const weatherIcon = document.getElementById('weather-icon');
+
+async function fetchWeather(city) {
+  if (!city.trim()) return;
+
+  if (WEATHER_API_KEY === '4cfa5964b175b7638e53fa3c7020d6bf') {
+    weatherDesc.textContent = 'Setup API key di script.js';
+    return;
+  }
+
+  weatherDesc.textContent = `Mencari data cuaca ${city}...`;
+  weatherTemp.textContent = '--°C';
+  weatherIcon.style.display = 'none';
+
+  const encodedCity = encodeURIComponent(city.trim());
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodedCity}&units=metric&lang=id&appid=${WEATHER_API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Kota tidak ditemukan');
+      }
+      throw new Error(`Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const temp = Math.round(data.main.temp);
+    const desc = data.weather[0].description;
+    const iconCode = data.weather[0].icon;
+    const cityName = `${data.name}, ${data.sys.country}`;
+
+    weatherCity.textContent = cityName;
+    weatherDesc.textContent = desc;
+    weatherTemp.textContent = `${temp}°C`;
+    weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    weatherIcon.style.display = 'inline-block';
+
+    localStorage.setItem('weather_city', data.name);
+  } catch (error) {
+    console.error('Weather Fetch Error:', error);
+    weatherCity.textContent = city;
+    weatherDesc.textContent = error.message === 'Kota tidak ditemukan' ? 'Kota tidak ditemukan' : 'Gagal memuat cuaca';
+    weatherTemp.textContent = '--°C';
+    weatherIcon.style.display = 'none';
+  }
+}
+
+weatherForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const searchCity = weatherCityInput.value.trim();
+  if (searchCity) {
+    fetchWeather(searchCity);
+    weatherCityInput.value = '';
+  }
+});
 
 function saveTodos() {
   localStorage.setItem('todos', JSON.stringify(todos));
@@ -36,9 +101,7 @@ function renderTodos() {
   }
 
   filteredTodos.forEach((todo) => {
-
     const originalIndex = todos.findIndex(t => t.id === todo.id);
-    
     const li = document.createElement('li');
     li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
     li.setAttribute('draggable', 'true');
@@ -109,9 +172,19 @@ function editTodoText(id, spanElement) {
 }
 
 function deleteTodo(id) {
-  todos = todos.filter(todo => todo.id !== id);
-  saveTodos();
-  renderTodos();
+  const todoItem = todoList.querySelector(`[data-id="${id}"]`);
+  if (todoItem) {
+    todoItem.style.transition = "all 0.4s ease";
+    todoItem.style.opacity = "0";
+    todoItem.style.transform = "translateX(50px) scale(0.8)";
+    todoItem.style.marginBottom = "0";
+
+    setTimeout(() => {
+      todos = todos.filter(todo => todo.id !== id);
+      saveTodos();
+      renderTodos();
+    }, 400);
+  }
 }
 
 todoInput.addEventListener('keydown', (e) => {
@@ -144,7 +217,6 @@ filterBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelector('.filter-btn.active').classList.remove('active');
     btn.classList.add('active');
-    
     currentFilter = btn.dataset.filter;
     renderTodos();
   });
@@ -160,8 +232,6 @@ function addDragEvents(item) {
   item.addEventListener('dragover', (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    
- 
     const draggingItem = todoList.querySelector('.dragging');
     const siblings = [...todoList.querySelectorAll('.todo-item:not(.dragging)')];
     
@@ -178,17 +248,15 @@ function addDragEvents(item) {
 
   item.addEventListener('dragend', () => {
     item.classList.remove('dragging');
-    
     const newIndices = [...todoList.querySelectorAll('.todo-item')]
       .map(li => Number(li.dataset.index));
       
-    const reorderedTodos = newIndices.map(index => todos[index]);
-    
-    todos = reorderedTodos;
+    todos = newIndices.map(index => todos[index]);
     saveTodos();
     renderTodos();
     dragSrcIndex = null;
   });
 }
 
+fetchWeather(savedCity);
 renderTodos();
